@@ -36,9 +36,6 @@ const ultraRareClass = "Poke_UltraRare";
 const legendaryClass = "Poke_Legendary";
 const shinyClass = "Poke_Shiny";
 
-const maxTurns = 999;
-const minAmount = 5;
-
 const deadAlertId = "ctl00_ContentPlaceHolder_pnlAllPokemonDead";
 const btnHealId = "ctl00_ContentPlaceHolder_btnHealMyPokemons";
 const healResultId = "HealingResult";
@@ -46,6 +43,8 @@ const navTopId = "NavTop";
 const navRightId = "NavRight";
 const navLeftId = "NavLeft";
 
+const maxTurns = 999;
+var minAmount = 0;
 var direction = 1;
 
 function captchaCheck() {
@@ -206,7 +205,7 @@ function hunt() {
 		rpVisible > -1 &&		
 		(
 		//within wanna-catch amount
-		howMany < minAmount + 1 ||
+		//howMany < minAmount + 1 ||
 		//not in pokedex
 		//pokedex ||		
 		ultraRare || legendary || shiny
@@ -237,14 +236,23 @@ function hunt() {
 	//change direction
 	direction = 1 - direction;
 	
-	setTimeout(hunt, rand);
+	var hunting = setTimeout(hunt, rand);
 }
 
-function main() {
-	
-}
+const huntCheckBoxId = "huntCheckBox";
 
-//captchaCheck();
-//pvp();
-//guildQuest();
-//hunt();
+function main(action) {	
+	switch (action) {
+		case "hunt":
+			var isCheck = document.getElementById(huntCheckBoxId).checked;
+			
+			if (isCheck) {
+				hunt();
+			}
+			else {
+				clearTimeout(hunting);
+			}
+			
+			break;
+	}
+}
