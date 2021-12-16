@@ -237,6 +237,8 @@ function hunt() {
 	
 	//change direction
 	direction = 1 - direction;
+	
+	setInterval(hunt(), rand);
 }
 
 function main(action) {	
@@ -244,7 +246,7 @@ function main(action) {
 		case "hunt":		
 			var isCheck = document.getElementById(huntCheckBoxId).checked;
 			if (isCheck) {
-				setInterval(hunt(), 2000);
+				hunt();
 			}
 			else {
 				clearInterval();
