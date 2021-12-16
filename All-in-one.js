@@ -43,7 +43,10 @@ const navTopId = "NavTop";
 const navRightId = "NavRight";
 const navLeftId = "NavLeft";
 
-const huntCheckBoxId = "huntCheckBox";
+const captchaCheckboxId = "captchaCheckbox";
+const huntCheckboxId = "huntCheckbox";
+const pvpCheckboxId = "pvpCheckbox";
+const guildQuestCheckboxId = "guildQuestCheckbox";
 
 const maxTurns = 999;
 var minAmount = -1;
@@ -116,6 +119,10 @@ function guildQuest() {
 			break;
 	}
 	
+	if (!document.getElementById(guildQuestCheckboxId).checked) {
+		return;
+	}
+	
 	setTimeout(guildQuest, 1500);
 }
 
@@ -165,6 +172,10 @@ function pvp() {
 			window.location.href = pvpUrl;
 			break;
 	}		
+	
+	if (!document.getElementById(pvpCheckboxId).checked) {
+		return;
+	}
 	
 	setTimeout(pvp, 1000);
 }
@@ -238,20 +249,46 @@ function hunt() {
 	//change direction
 	direction = 1 - direction;
 	
-	setInterval(hunt(), rand);
+	if (!document.getElementById(huntCheckboxId).checked) {
+		return;
+	}
+	
+	setTimeout(hunt, rand);
 }
 
-function main(action) {	
-	switch (action) {
-		case "hunt":		
-			var isCheck = document.getElementById(huntCheckBoxId).checked;
-			if (isCheck) {
+function getStorage(item, destination) {
+	var value = window.localStorage.getItem(item);
+	if (value != null) {
+		document.getElementById(destination).checked = JSON.parse(value);
+	}
+}
+
+function onLoad() {
+	getStorage('captcha', captchaCheckboxId);
+	getStorage('hunt', huntCheckboxId);
+	getStorage('pvp', pvpCheckboxId);
+	getStorage('guildQuest', guildQuestCheckboxId);
+}
+
+function auto(action) {	
+	var isCheck = document.getElementById(action + "Checkbox").checked;
+	
+	window.localStorage.setItem(action, isCheck);
+	
+	if (isCheck) {	
+		switch (action) {
+			case "captcha":
+				captchaCheck();
+				break;
+			case "hunt":
 				hunt();
-			}
-			else {
-				clearInterval();
-			}
-			
-			break;
+				break;
+			case "pvp":
+				pvp();
+				break;
+			case "guildQuest":
+				guildQuest();
+				break;
+		}
 	}
 }
