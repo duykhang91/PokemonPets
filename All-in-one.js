@@ -43,8 +43,10 @@ const navTopId = "NavTop";
 const navRightId = "NavRight";
 const navLeftId = "NavLeft";
 
+const huntCheckBoxId = "huntCheckBox";
+
 const maxTurns = 999;
-var minAmount = 0;
+var minAmount = -1;
 var direction = 1;
 
 function captchaCheck() {
@@ -235,22 +237,17 @@ function hunt() {
 	
 	//change direction
 	direction = 1 - direction;
-	
-	var hunting = setTimeout(hunt, rand);
 }
-
-const huntCheckBoxId = "huntCheckBox";
 
 function main(action) {	
 	switch (action) {
-		case "hunt":
+		case "hunt":		
 			var isCheck = document.getElementById(huntCheckBoxId).checked;
-			
 			if (isCheck) {
-				hunt();
+				setInterval(hunt(), 2000);
 			}
 			else {
-				clearTimeout(hunting);
+				clearInterval();
 			}
 			
 			break;
